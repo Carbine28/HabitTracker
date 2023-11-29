@@ -1,5 +1,4 @@
 using HabitTracker;
-
 namespace HabitTrackerTests
 {
     [TestClass]

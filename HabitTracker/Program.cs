@@ -1,6 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
-
-namespace HabitTracker
+﻿namespace HabitTracker
 {
     internal class Program
     {
