@@ -103,8 +103,7 @@ namespace HabitTracker
             {
                 Record recordToUpdate = GetRecord(id);
                 Console.WriteLine($"Old Record: {recordToUpdate}");
-                Console.WriteLine("Enter new Date: ");
-                string date = Console.ReadLine();
+                DateTime date = Utils.GetDateFromUser();
                 Console.WriteLine("Enter new Quantity: ");
                 int quantity;
                 while(!int.TryParse(Console.ReadLine(), out quantity))
@@ -119,7 +118,7 @@ namespace HabitTracker
                     connection.Open();
                     var cmd = connection.CreateCommand();
                     cmd.CommandText = "UPDATE code_habbit SET DATE = $date, QUANTITY = $quantity WHERE Id = $id";
-                    cmd.Parameters.AddWithValue("$date", date);
+                    cmd.Parameters.AddWithValue("$date", date.ToString("dd/MM/yy"));
                     cmd.Parameters.AddWithValue("$quantity", quantity);
                     cmd.Parameters.AddWithValue("$id", id);
                     cmd.ExecuteNonQuery();
@@ -153,7 +152,7 @@ namespace HabitTracker
                         throw new Exception("Record not found.");
                     }
                     connecton.Close();
-                    return new Record(idFromDB, date, quantity);
+                    return new Record(idFromDB, DateTime.ParseExact(date, "dd/MM/yy", null), quantity);
                 }
                 connecton.Close();
             }   
@@ -194,7 +193,7 @@ namespace HabitTracker
         public void CreateRecord()
         {
             Console.WriteLine("Enter Date: ");
-            string date = Console.ReadLine();
+            DateTime date = Utils.GetDateFromUser();
             Console.WriteLine("Enter Coding Quantity: ");
             int quantity;
             while(!int.TryParse(Console.ReadLine(), out quantity))
@@ -208,7 +207,7 @@ namespace HabitTracker
                 connection.Open();
                 var cmd = connection.CreateCommand();
                 cmd.CommandText = "INSERT INTO code_habbit (DATE, QUANTITY) VALUES ($date, $quantity)";
-                cmd.Parameters.AddWithValue("$date", date);
+                cmd.Parameters.AddWithValue("$date", date.ToString("dd/MM/yy"));
                 cmd.Parameters.AddWithValue("$quantity", quantity);
                 cmd.ExecuteNonQuery();
                 connection.Close();

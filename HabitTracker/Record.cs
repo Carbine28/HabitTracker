@@ -9,10 +9,10 @@ namespace HabitTracker
     public class Record
     {
         public int Id { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public int Quantity { get; set; }
 
-        public Record(int id, string date, int quantity)
+        public Record(int id, DateTime date, int quantity)
         {
             Id = id;
             Date = date;
