@@ -74,7 +74,7 @@ namespace HabitTracker
                             ListRecords();
                             break;
                         case Commands.Add:
-                            CreateRecord();
+                            AddRecord();
                             break;
                         case Commands.Delete:
                             DeleteRecord();
@@ -190,7 +190,7 @@ namespace HabitTracker
             ListRecords();
         }
 
-        public void CreateRecord()
+        public void AddRecord()
         {
             Console.WriteLine("Enter Date: ");
             DateTime date = Utils.GetDateFromUser();
@@ -201,6 +201,21 @@ namespace HabitTracker
                 Console.WriteLine("Invalid input. Please try again.");
             }
             Console.Clear();
+            Console.WriteLine($"Inserting new record with date:{date} and quantity:{quantity} ");
+            using (var connection = new SqliteConnection(ConnectionString))
+            {
+                connection.Open();
+                var cmd = connection.CreateCommand();
+                cmd.CommandText = "INSERT INTO code_habbit (DATE, QUANTITY) VALUES ($date, $quantity)";
+                cmd.Parameters.AddWithValue("$date", date.ToString("dd/MM/yy"));
+                cmd.Parameters.AddWithValue("$quantity", quantity);
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
+
+        public void AddRecord(DateTime date, int quantity)
+        {
             Console.WriteLine($"Inserting new record with date:{date} and quantity:{quantity} ");
             using (var connection = new SqliteConnection(ConnectionString))
             {
